@@ -1,0 +1,4 @@
+/build
+/.dart_tool
+/android/app/key.jks
+/android/key.properties

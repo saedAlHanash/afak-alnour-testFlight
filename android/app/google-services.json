@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "747835007262",
+    "project_id": "afaq-academy",
+    "storage_bucket": "afaq-academy.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:747835007262:android:3fcb48702ce6599e66e90f",
+        "android_client_info": {
+          "package_name": "com.afaq.afaq_alnour_academy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "747835007262-6j9ems31tbelrsgh3fhrkn7h25jr4oms.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDf_dY7pi5NyeFkQXCow_3RGlzm3hYNP4o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "747835007262-6j9ems31tbelrsgh3fhrkn7h25jr4oms.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
