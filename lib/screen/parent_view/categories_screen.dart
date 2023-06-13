@@ -45,11 +45,15 @@ class CategoriesScreen extends StatelessWidget {
           Future.delayed(
             Duration(seconds: 1),
             () {
-              Navigator.push(
+              if (state.byId) {
+              } else {
+                Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => LevelScreen(list: state.levels),
-                  ));
+                  ),
+                );
+              }
             },
           );
         }
@@ -625,8 +629,8 @@ Widget bottomSheet(context, double width, double height, MyChildrenModel myChild
                                   isTest: false, category_id: model!.data[index!].id);
                             } else {
                               get.answers = {};
-                              get.getTest(id: model!.data[index!].id);
-                              get.catId = model.data[index].id;
+                              get.getTest(id: catId);
+                              get.catId = catId;
                             }
                           },
                         );

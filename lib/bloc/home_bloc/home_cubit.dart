@@ -304,13 +304,13 @@ class HomeCubit extends Cubit<HomeState> {
   void enrollStudent({int? category_id, bool? isTest}) {
     emit(EnrollSutdentsLoadingState());
     DioHelper.postData(
-            url: 'levels/enroll',
-            data: {},
-            category_id: category_id,
-            token: CacheHelper.getData(key: 'token_student'),
-            isTest: isTest,
-            student_id: childId)
-        .then((value) {
+      url: 'levels/enroll',
+      data: {},
+      category_id: category_id,
+      token: CacheHelper.getData(key: 'token_student'),
+      isTest: isTest,
+      student_id: childId,
+    ).then((value) {
       if (value.data['message'] == "Level 1 does not exist within this category.") {
         toast(msg: value.data['message'], color: Colors.red);
         loading = false;
@@ -348,7 +348,7 @@ class HomeCubit extends Cubit<HomeState> {
       catid: catId,
     ).then((value) {
       var list = LevelResponse.fromJson(value.data, catId ?? 0).data;
-      emit(GetLevelSuccessState(levels: list));
+      emit(GetLevelSuccessState(levels: list, byId: false));
     }).catchError((error) {
       emit(GetLevelErrorState());
     });
@@ -366,8 +366,8 @@ class HomeCubit extends Cubit<HomeState> {
             studId: studentId,
             token: CacheHelper.getData(key: 'token_student'))
         .then((value) {
-      levelModel = LevelModel.fromJson(value.data);
-      emit(GetLevelSuccessState(levels: []));
+      levelModelById = LevelModelById.fromJson(value.data);
+      emit(GetLevelSuccessState(levels: [], byId: true));
     }).catchError((error) {
       emit(GetLevelErrorState());
     });
@@ -377,7 +377,11 @@ class HomeCubit extends Cubit<HomeState> {
 
   void getLevelCourses({int? id}) {
     emit(GetClassLoadingState());
-    DioHelper.getData(url: 'courses', lvlID: id, lang: lang).then((value) {
+    DioHelper.getData(
+      url: 'courses',
+      lvlID: id,
+      lang: lang,
+    ).then((value) {
       classModel = ClassModel.fromJson(value.data);
       emit(GetClassSuccessState());
     }).catchError((error) {
@@ -511,6 +515,7 @@ class HomeCubit extends Cubit<HomeState> {
     DioHelper.getData(
             url: 'exam', catid: id, token: CacheHelper.getData(key: 'token_student'))
         .then((value) {
+      loading = false;
       log(value.data.toString());
       testModel = TestModel.fromJson(value.data);
       if (testModel!.data.isNotEmpty) {
@@ -546,9 +551,11 @@ class HomeCubit extends Cubit<HomeState> {
             url: 'exam/submit',
             token: CacheHelper.getData(key: 'token_student'),
             student_id: childId,
+            lang: lang,
             exam_id: examId,
             data: answers)
         .then((value) {
+      loading = false;
       testValue = 0;
       testIndex = 0;
       emit(SendExamSuccessState());

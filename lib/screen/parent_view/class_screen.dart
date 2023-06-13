@@ -59,8 +59,7 @@ class ClassScreen extends StatelessWidget {
                             height: height * 0.02,
                           ),
                           Padding(
-                            padding:
-                                EdgeInsets.symmetric(horizontal: width * 0.05),
+                            padding: EdgeInsets.symmetric(horizontal: width * 0.05),
                             child: AutoSizeText(
                               S.of(context).payment_message,
                               style: Theme.of(context).textTheme.headline3,
@@ -100,28 +99,30 @@ class ClassScreen extends StatelessWidget {
           body: get.classModel != null
               ? Padding(
                   padding: EdgeInsets.symmetric(horizontal: width * 0.05),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: height * 0.03,
-                      ),
-                      SizedBox(
-                        height: height * 0.85,
-                        child: ListView.separated(
-                            itemBuilder: (context, index) => Courses(
-                                  context,
-                                  height: height,
-                                  width: width,
-                                  model: get.classModel,
-                                  index: index,
-                                ),
-                            separatorBuilder: (context, index) => SizedBox(
-                                  height: height * 0.03,
-                                ),
-                            itemCount: get.classModel!.data.length),
-                      )
-                    ],
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: height * 0.03,
+                        ),
+                        SizedBox(
+                          height: height * 0.85,
+                          child: ListView.separated(
+                              itemBuilder: (context, index) => Courses(
+                                    context,
+                                    height: height,
+                                    width: width,
+                                    model: get.classModel,
+                                    index: index,
+                                  ),
+                              separatorBuilder: (context, index) => SizedBox(
+                                    height: height * 0.03,
+                                  ),
+                              itemCount: get.classModel!.data.length),
+                        )
+                      ],
+                    ),
                   ),
                 )
               : Center(child: AdabtiveIndecator(os: getOS())),
@@ -191,8 +192,7 @@ class ClassScreen extends StatelessWidget {
                             image: DecorationImage(
                                 image: NetworkImage(get.lang == "ar"
                                     ? ImageUrl + model.data[index].ar_image_url!
-                                    : ImageUrl +
-                                        model.data[index].en_image_url!),
+                                    : ImageUrl + model.data[index].en_image_url!),
                                 fit: BoxFit.cover)),
                       ),
                     ),
@@ -302,8 +302,7 @@ class ClassScreen extends StatelessWidget {
                               scrollDirection: Axis.horizontal,
                               itemBuilder: (context, index1) => AutoSizeText(
                                     '${model.data[index].days[index1]}',
-                                    style:
-                                        Theme.of(context).textTheme.headline3,
+                                    style: Theme.of(context).textTheme.headline3,
                                     textScaleFactor: 1,
                                     minFontSize: 21,
                                     maxFontSize: 23,
@@ -434,8 +433,7 @@ class ClassScreen extends StatelessWidget {
                         SizedBox(
                           width: width * 0.05,
                         ),
-                        Icon(Icons.account_balance_wallet_outlined,
-                            size: height * 0.035),
+                        Icon(Icons.account_balance_wallet_outlined, size: height * 0.035),
                         SizedBox(
                           width: width * 0.05,
                         ),
@@ -458,8 +456,7 @@ class ClassScreen extends StatelessWidget {
                               condition: state is! AddChildToCardLoadingState,
                               builder: (context) => InkWell(
                                 onTap: () {
-                                  if (model.data[index].students_count! +
-                                          studentCount <
+                                  if (model.data[index].students_count! + studentCount <
                                       model.data[index].max_participants!) {
                                     get.addChildToCard(
                                         model.data[index].id,
@@ -469,9 +466,7 @@ class ClassScreen extends StatelessWidget {
                                         model.data[index].price!,
                                         false);
                                   } else {
-                                    toast(
-                                        msg: S.of(context).close,
-                                        color: Colors.red);
+                                    toast(msg: S.of(context).close, color: Colors.red);
                                   }
                                 },
                                 child: Container(
@@ -483,12 +478,10 @@ class ClassScreen extends StatelessWidget {
                                   child: Center(
                                     child: AutoSizeText(
                                       S.of(context).add_to_cart,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline3!
-                                          .copyWith(
-                                            color: Colors.white,
-                                          ),
+                                      style:
+                                          Theme.of(context).textTheme.headline3!.copyWith(
+                                                color: Colors.white,
+                                              ),
                                       textScaleFactor: 1,
                                       minFontSize: 21,
                                       maxFontSize: 23,

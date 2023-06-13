@@ -3,6 +3,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
+import '../local/cache_helper.dart';
+
 class DioHelper {
   static Dio? dio;
 
@@ -57,7 +59,7 @@ class DioHelper {
   }) async {
     dio!.options.headers = {
       'Accept': 'application/json',
-      'Accept-Language': lang,
+      'Accept-Language': lang??CacheHelper.getData(key: 'lang'),
       'subject-id':id,
       'level-id' : lvlID,
       'is-test' : isTest,

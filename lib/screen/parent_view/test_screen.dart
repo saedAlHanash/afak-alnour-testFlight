@@ -84,7 +84,7 @@ class TestScreen extends StatelessWidget {
                                   get.testValue = 0;
                                 }
                               }
-                            : () {},
+                            : null,
                         child: state is !SendExamLoadingState ? Container(
                           width: width * 0.2,
                           height: height * 0.06,

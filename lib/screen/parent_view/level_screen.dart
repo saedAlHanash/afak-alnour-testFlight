@@ -45,14 +45,43 @@ class _LevelScreenState extends State<LevelScreen> {
     return BlocConsumer<HomeCubit, HomeState>(
       listener: (context, state) {
         if (state is EnrollSutdentsSuccessState) {
+          Navigator.pop(context);
           homeCubit.getLevelCourses(id: selectedItem!.id);
           homeCubit.isPackage = false;
           Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ClassScreen(),
-              ));
-
+            context,
+            MaterialPageRoute(
+              builder: (context) => ClassScreen(),
+            ),
+          );
+        }
+        if (state is SendExamSuccessState) {
+          homeCubit.getLevelCourses(id: selectedItem!.id);
+          homeCubit.isPackage = false;
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ClassScreen(),
+            ),
+          );
+        }
+        if (state is GetTestSuccessState) {
+          Navigator.pop(context);
+          Future.delayed(
+            Duration(milliseconds: 600),
+            () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TestScreen(),
+                ),
+              );
+            },
+          );
+        }
+        if (state is GetTestDataEmptyState) {
+          toast(msg: S.of(context).empty_test, color: Colors.red);
+          Navigator.pop(context);
         }
 
         // if (state is GetTestSuccessState) {
@@ -72,21 +101,23 @@ class _LevelScreenState extends State<LevelScreen> {
         var get = HomeCubit.get(context);
         return Scaffold(
           appBar: AppBar(),
-          body: ListView.separated(
-            padding: EdgeInsets.symmetric(horizontal: width * 0.05),
-            itemCount: widget.list.length,
-            itemBuilder: (context, index) {
-              return CourseTile(
-                context,
-                width: width,
-                height: height,
-                get: get,
-                index: index,
-                model: widget.list[index],
-              );
-            },
-            separatorBuilder: (_, i) => SizedBox(height: 10.0),
-          ),
+          body: widget.list.isEmpty
+              ? Center()
+              : ListView.separated(
+                  padding: EdgeInsets.symmetric(horizontal: width * 0.05),
+                  itemCount: widget.list.length,
+                  itemBuilder: (context, index) {
+                    return CourseTile(
+                      context,
+                      width: width,
+                      height: height,
+                      get: get,
+                      index: index,
+                      model: widget.list[index],
+                    );
+                  },
+                  separatorBuilder: (_, i) => SizedBox(height: 10.0),
+                ),
         );
       },
     );
@@ -121,27 +152,26 @@ Widget CourseTile(
           maxFontSize: 16,
         ),
         onTap: () {
-          selectedItem =model;
+          selectedItem = model;
           showModalBottomSheet(
               context: context,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
               builder: (context) {
                 return bottomSheet(
-                    context,
-                    width,
-                    height,
-                    context.read<HomeCubit>().myChildrenModel!,
-                    model.catId,
-                    false,
-                    name: '',
-                    model: context.read<HomeCubit>().categorisModel!,
-                    index: index,
-                    id: 0,
-                  );
+                  context,
+                  width,
+                  height,
+                  context.read<HomeCubit>().myChildrenModel!,
+                  model.catId,
+                  false,
+                  name: '',
+                  model: context.read<HomeCubit>().categorisModel!,
+                  index: index,
+                  id: 0,
+                );
               });
 
           return;
         },
       ),
     );
-

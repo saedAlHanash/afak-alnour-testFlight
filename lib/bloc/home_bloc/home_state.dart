@@ -58,18 +58,13 @@ class GetLevelLoadingState extends HomeState {
 
 class GetLevelSuccessState extends HomeState {
   List<LevelData> levels = [];
+  bool byId = false;
 
   GetLevelSuccessState({
     required this.levels,
+    required this.byId,
   });
 
-  GetLevelSuccessState copyWith({
-    List<LevelData>? levels,
-  }) {
-    return GetLevelSuccessState(
-      levels: levels ?? this.levels,
-    );
-  }
 }
 
 class GetLevelErrorState extends HomeState {}
@@ -122,7 +117,9 @@ class AddChildToCardLoadingState extends HomeState {}
 
 class AddChildToCardSuccessState extends HomeState {}
 
-class RemoveChildFromCardSuccessState extends HomeState {}
+class RemoveChildFromCardSuccessState extends HomeState {
+
+}
 
 class DeleteAllCardInformationState extends HomeState {}
 
