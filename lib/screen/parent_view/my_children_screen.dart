@@ -19,7 +19,7 @@ class MyChildrenScreen extends StatelessWidget {
 
     return BlocConsumer<HomeCubit, HomeState>(
       listener: (context, state) {
-        if(state is DeleteMyChildSuccessState){
+        if (state is DeleteMyChildSuccessState) {
           Navigator.pop(context);
           HomeCubit.get(context).getMyChildren();
         }
@@ -39,76 +39,70 @@ class MyChildrenScreen extends StatelessWidget {
                   ? Center(child: AdabtiveIndecator(os: getOS()))
                   : Padding(
                       padding: EdgeInsets.symmetric(horizontal: width * 0.05),
-                      child: Column(
-                        children: [
-                          SizedBox(height: height * 0.02),
-                          Container(
-                            height: height * 0.86,
-                            child: Stack(
-                              clipBehavior: Clip.none,
-                              children: [
-                                ListView.separated(
-                                    itemBuilder: (context, index) => myChild(
-                                        context,
-                                        width: width,
-                                        height: height,
-                                        model: get.myChildrenModel,
-                                        index: index),
-                                    separatorBuilder: (context, index) =>
-                                        SizedBox(
-                                          height: height * 0.03,
-                                        ),
-                                    itemCount:
-                                        get.myChildrenModel!.data.length),
-                                Positioned(
-                                  top: height * 0.78,
-                                  left: get.lang == 'ar' ? 0 : width * 0.49,
-                                  right: get.lang == 'ar' ? width * 0.49 : 0,
-                                  child: InkWell(
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                RegisterScreen(),
-                                          ));
-                                    },
-                                    child: Container(
-                                      width: width * 0.4,
-                                      height: height * 0.07,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          AutoSizeText(
-                                              S.of(context).add_child,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .headline3,
-                                              textScaleFactor: 1,
-                                              minFontSize: 18,
-                                              maxFontSize: 20),
-                                          SizedBox(
-                                            width: width * 0.02,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            SizedBox(height: height * 0.01),
+                            Container(
+                              height: height * 0.86,
+                              child: Stack(
+                                clipBehavior: Clip.none,
+                                children: [
+                                  ListView.separated(
+                                      itemBuilder: (context, index) => myChild(context,
+                                          width: width,
+                                          height: height,
+                                          model: get.myChildrenModel,
+                                          index: index),
+                                      separatorBuilder: (context, index) => SizedBox(
+                                            height: height * 0.03,
                                           ),
-                                          Icon(
-                                            Icons.add,
-                                            size: height * 0.03,
-                                          )
-                                        ],
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius:
-                                            BorderRadius.circular(10),
+                                      itemCount: get.myChildrenModel!.data.length),
+                                  Positioned(
+                                    top: height * 0.78,
+                                    left: get.lang == 'ar' ? 0 : width * 0.49,
+                                    right: get.lang == 'ar' ? width * 0.49 : 0,
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => RegisterScreen(),
+                                            ));
+                                      },
+                                      child: Container(
+                                        width: width * 0.4,
+                                        height: height * 0.07,
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            AutoSizeText(S.of(context).add_child,
+                                                style:
+                                                    Theme.of(context).textTheme.headline3,
+                                                textScaleFactor: 1,
+                                                minFontSize: 18,
+                                                maxFontSize: 20),
+                                            SizedBox(
+                                              width: width * 0.02,
+                                            ),
+                                            Icon(
+                                              Icons.add,
+                                              size: height * 0.03,
+                                            )
+                                          ],
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                )
-                              ],
+                                  )
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     )
               : Center(
@@ -156,14 +150,10 @@ class MyChildrenScreen extends StatelessWidget {
   }
 
   Widget myChild(context,
-          {double? width,
-          double? height,
-          MyChildrenModel? model,
-          int? index}) =>
+          {double? width, double? height, MyChildrenModel? model, int? index}) =>
       Stack(
-        alignment: HomeCubit.get(context).lang == "ar"
-            ? Alignment.topLeft
-            : Alignment.topRight,
+        alignment:
+            HomeCubit.get(context).lang == "ar" ? Alignment.topLeft : Alignment.topRight,
         children: [
           InkWell(
             onTap: () {
@@ -215,8 +205,8 @@ class MyChildrenScreen extends StatelessWidget {
                 showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15)),
+                    shape:
+                        RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                     backgroundColor: Colors.white,
                     title: Column(
                       children: [
@@ -237,8 +227,7 @@ class MyChildrenScreen extends StatelessWidget {
                               },
                               child: Container(
                                 height: height * 0.05,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: width * 0.02),
+                                padding: EdgeInsets.symmetric(horizontal: width * 0.02),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(15),
                                   border: Border.all(color: Colors.black),
@@ -246,31 +235,28 @@ class MyChildrenScreen extends StatelessWidget {
                                 child: Center(
                                   child: Text(
                                     S.of(context).no,
-                                    style:
-                                        Theme.of(context).textTheme.bodyText1,
+                                    style: Theme.of(context).textTheme.bodyText1,
                                     textScaleFactor: 1,
                                   ),
                                 ),
                               ),
                             ),
-                            HomeCubit.get(context).state
-                                    is DeleteMyChildLoadingState
+                            HomeCubit.get(context).state is DeleteMyChildLoadingState
                                 ? Center(
                                     child: AdabtiveIndecator(os: getOS()),
                                   )
                                 : InkWell(
                                     onTap: () {
-                                      HomeCubit.get(context).deleteMyChild(model.data[index].id!);
+                                      HomeCubit.get(context)
+                                          .deleteMyChild(model.data[index].id!);
                                     },
                                     child: Container(
                                       height: height * 0.05,
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: width * 0.02),
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: width * 0.02),
                                       decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                          border:
-                                              Border.all(color: Colors.black),
+                                          borderRadius: BorderRadius.circular(15),
+                                          border: Border.all(color: Colors.black),
                                           color: Colors.black),
                                       child: Center(
                                         child: Text(

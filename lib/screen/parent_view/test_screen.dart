@@ -125,15 +125,15 @@ class TestScreen extends StatelessWidget {
   Widget answersItem({double? width}) {
     return BlocConsumer<HomeCubit, HomeState>(
       listener: (context, state) {
-        if (state is GetLevelSuccessState) {
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => LevelScreen(
-                  model: HomeCubit.get(context).levelModelById!,
-                ),
-              ));
-        }
+        // if (state is GetLevelSuccessState) {
+        //   Navigator.pushReplacement(
+        //       context,
+        //       MaterialPageRoute(
+        //         builder: (context) => LevelScreen(
+        //           list: HomeCubit.get(context).levelModelById!,
+        //         ),
+        //       ));
+        // }
       },
       builder: (context, state) {
         var get = HomeCubit.get(context);

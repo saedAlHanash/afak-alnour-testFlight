@@ -6,9 +6,11 @@ import 'package:afaq_alnour_academy/screen/welcome_screen.dart';
 import 'package:afaq_alnour_academy/widget/toast.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../adaptive_widget/adabtive_indecator.dart';
 import '../../bloc/home_bloc/home_cubit.dart';
@@ -39,16 +41,14 @@ class CategoriesScreen extends StatelessWidget {
 
     return BlocConsumer<HomeCubit, HomeState>(
       listener: (context, state) {
-        if (state is EnrollSutdentsSuccessState) {
-          Navigator.pop(context);
+        if (state is GetLevelSuccessState) {
           Future.delayed(
             Duration(seconds: 1),
             () {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        LevelScreen(model: HomeCubit.get(context).levelModelById!),
+                    builder: (context) => LevelScreen(list: state.levels),
                   ));
             },
           );
@@ -177,120 +177,100 @@ class CategoriesScreen extends StatelessWidget {
 }
 
 Widget CourseTile(context,
-        {double? width,
-        double? height,
-        String? name,
-        int? id,
-        CategorisModel? model,
-        int? index,
-        MyChildrenModel? myChildrenModel,
-        var state}) =>
-    BlocConsumer<HomeCubit, HomeState>(
-      listener: (context, state) {},
-      builder: (context, state) {
-        var get = HomeCubit.get(context);
-        return Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.transparent,
-              border: Border.all(color: Colors.teal)),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      width: width! * 0.55,
-                      child: AutoSizeText(
-                        '${model!.data[index!].name}',
-                        style: Theme.of(context).textTheme.headline3,
-                        textScaleFactor: 1,
-                        minFontSize: 21,
-                        maxFontSize: 23,
-                      ),
+    {double? width,
+    double? height,
+    String? name,
+    int? id,
+    CategorisModel? model,
+    int? index,
+    MyChildrenModel? myChildrenModel,
+    var state}) {
+  return BlocConsumer<HomeCubit, HomeState>(
+    listener: (context, state) {},
+    builder: (context, state) {
+      var get = HomeCubit.get(context);
+      return Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.transparent,
+            border: Border.all(color: Colors.teal)),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    width: width! * 0.55,
+                    child: AutoSizeText(
+                      '${model!.data[index!].name}',
+                      style: Theme.of(context).textTheme.headline3,
+                      textScaleFactor: 1,
+                      minFontSize: 21,
+                      maxFontSize: 23,
                     ),
-                    Spacer(),
-                    TextButton(
-                        onPressed: () {
-                          if (CacheHelper.getData(key: 'token_student') != null) {
-                            get.childId = 0;
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return dialogEnroll(width * 0.8,
-                                    height! * 0.35, context, name, model, index, id!);
-                                });
-                            //TODO : saed
-                            // showModalBottomSheet(
-                            //   context: context,
-                            //   shape: RoundedRectangleBorder(
-                            //       borderRadius: BorderRadius.circular(10)),
-                            //   builder: (context) {
-                            //     return bottomSheet(
-                            //     context,
-                            //     width,
-                            //     height!,
-                            //     myChildrenModel!,
-                            //     model.data[index].id,
-                            //     false,
-                            //     name: name,
-                            //     model: model,
-                            //     index: index,
-                            //     id: id,
-                            //   );
-                            //   },
-                            // );
-                          } else {
-                            showDialog(
-                                context: context,
-                                builder: (context) => dialogInRegister(
-                                    width * 0.8, height! * 0.3, context));
-                          }
-                        },
-                        child: AutoSizeText(
-                          S.of(context).see_Levels,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText2!
-                              .copyWith(color: Colors.blue),
-                          textScaleFactor: 0.8,
-                          minFontSize: 10,
-                          maxFontSize: 14,
-                        ))
-                  ],
-                ),
-                SizedBox(
-                  height: height! * 0.01,
-                ),
-                AutoSizeText(
-                  '${model.data[index].min_age} - ${model.data[index].max_age}',
-                  style: Theme.of(context).textTheme.headline3,
-                  textScaleFactor: 1,
-                  minFontSize: 20,
-                  maxFontSize: 22,
-                ),
-                AutoSizeText(
-                  S.of(context).description_course,
-                  style: Theme.of(context).textTheme.headline3,
-                  textScaleFactor: 1,
-                  minFontSize: 24,
-                  maxFontSize: 26,
-                ),
-                AutoSizeText(
-                  '${model.data[index].description}',
-                  style: Theme.of(context).textTheme.headline3,
-                  textScaleFactor: 1,
-                  minFontSize: 22,
-                  maxFontSize: 24,
-                ),
-              ],
-            ),
+                  ),
+                  Spacer(),
+                  TextButton(
+                    onPressed: () {
+                      if (CacheHelper.getData(key: 'token_student') != null) {
+                        get.getLevel(catId: model.data[index].id);
+                      } else {
+                        showDialog(
+                            context: context,
+                            builder: (context) =>
+                                dialogInRegister(width * 0.8, height! * 0.3, context));
+                      }
+                    },
+                    child: (state is GetLevelLoadingState)
+                        ? Center(
+                      child: AdabtiveIndecator(os: getOS()),
+                    )
+                        : AutoSizeText(
+                            S.of(context).see_Levels,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText2!
+                                .copyWith(color: Colors.blue),
+                            textScaleFactor: 1,
+                            minFontSize: 10,
+                            maxFontSize: 12,
+                          ),
+                  )
+                ],
+              ),
+              SizedBox(
+                height: height! * 0.01,
+              ),
+              AutoSizeText(
+                '${model.data[index].min_age} - ${model.data[index].max_age}',
+                style: Theme.of(context).textTheme.headline3,
+                textScaleFactor: 1,
+                minFontSize: 20,
+                maxFontSize: 22,
+              ),
+              AutoSizeText(
+                S.of(context).description_course,
+                style: Theme.of(context).textTheme.headline3,
+                textScaleFactor: 1,
+                minFontSize: 24,
+                maxFontSize: 26,
+              ),
+              AutoSizeText(
+                '${model.data[index].description}',
+                style: Theme.of(context).textTheme.headline3,
+                textScaleFactor: 1,
+                minFontSize: 22,
+                maxFontSize: 24,
+              ),
+            ],
           ),
-        );
-      },
-    );
+        ),
+      );
+    },
+  );
+}
 
 Widget dialogEnroll(double width, double height, BuildContext context, String? name,
     CategorisModel model, int? index, int id) {
@@ -639,49 +619,29 @@ Widget bottomSheet(context, double width, double height, MyChildrenModel myChild
                     if (get.childId != 0) {
                       get.changeLoading(value: true);
                       if (!isPackage) {
-                        if (get.childId != 0) {
-                          Future.delayed(
-                            Duration(seconds: 1),
-                            () {
-                              if (get.levelModelById == null ||
-                                  get.levelModelById!.data.isEmpty) {
-                                Navigator.pop(context);
-                                showDialog(
-                                    context: context,
-                                    builder: (context) => dialogEnroll(
-                                        width * 0.8,
-                                        height * 0.35,
-                                        context,
-                                        name,
-                                        model!,
-                                        index,
-                                        id!));
-                                get.changeLoading(value: false);
-                              } else {
-                                get.changeLoading(value: false);
-                                Navigator.pop(context);
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          LevelScreen(model: get.levelModelById!),
-                                    ));
-                              }
-                            },
-                          );
-                        }
+                        Future.delayed(
+                          Duration(seconds: 1),
+                          () {
+                            if (index == 0) {
+                              get.enrollStudent(
+                                  isTest: false, category_id: model!.data[index!].id);
+                            } else {
+                              get.answers = {};
+                              get.getTest(id: model!.data[index!].id);
+                              get.catId = model.data[index].id;
+                            }
+                          },
+                        );
                       } else {
-                        if (get.childId != 0) {
-                          Future.delayed(
-                            Duration(seconds: 1),
-                            () {
-                              Navigator.pop(context);
-                              get.addChildToCard(
-                                  0, get.packageModel!.data!.name, packagePrice, true);
-                              get.changeLoading(value: false);
-                            },
-                          );
-                        }
+                        Future.delayed(
+                          Duration(seconds: 1),
+                          () {
+                            Navigator.pop(context);
+                            get.addChildToCard(
+                                0, get.packageModel!.data!.name, packagePrice, true);
+                            get.changeLoading(value: false);
+                          },
+                        );
                       }
                     } else {
                       toast(msg: 'please select child first', color: Colors.red);

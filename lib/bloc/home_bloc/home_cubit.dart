@@ -27,6 +27,7 @@ import '../../model/categoris_model.dart';
 import '../../model/course_model.dart';
 import '../../model/enroll_model.dart';
 import '../../model/class_model.dart';
+import '../../model/levle_response.dart';
 import '../../model/slider_model.dart';
 import '../../screen/parent_view/home_page_screen.dart';
 import '../../widget/toast.dart';
@@ -53,14 +54,13 @@ class HomeCubit extends Cubit<HomeState> {
     emit(LoadingState());
   }
 
-  void addChildToCard(
-      int? classId, String? className, int? price, bool? isPackage) {
+  void addChildToCard(int? classId, String? className, int? price, bool? isPackage) {
     emit(AddChildToCardLoadingState());
     Future.delayed(
       Duration(seconds: 2),
       () async {
-        cardModel.add(CardModel(childId, childName, classId, className, price,
-            subjectId, subjectName, isPackage));
+        cardModel.add(CardModel(childId, childName, classId, className, price, subjectId,
+            subjectName, isPackage));
         final List<String> dataList = cardModel.map((value) {
           return json.encode(value);
         }).toList();
@@ -97,8 +97,7 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
-  Future<bool> deleteAllCardInformation(
-      {bool? withCard, bool? re = false}) async {
+  Future<bool> deleteAllCardInformation({bool? withCard, bool? re = false}) async {
     childId = 0;
     childName = '';
     subjectName = '';
@@ -159,10 +158,7 @@ class HomeCubit extends Cubit<HomeState> {
       PaymentRequest? paymentRequest}) async {
     try {
       paymentIntentData = await createPaymentIntent(amount, currency,
-          paymentRequest: paymentRequest,
-          type: type,
-          price: price,
-          invoiceID: invoiceID);
+          paymentRequest: paymentRequest, type: type, price: price, invoiceID: invoiceID);
       if (paymentIntentData != null) {
         await Stripe.instance.initPaymentSheet(
             paymentSheetParameters: SetupPaymentSheetParameters(
@@ -173,8 +169,7 @@ class HomeCubit extends Cubit<HomeState> {
         ));
         await displayPaymentSheet(context);
       }
-    } catch (e, s) {
-    }
+    } catch (e, s) {}
   }
 
   Future<void> displayPaymentSheet(context) async {
@@ -192,10 +187,8 @@ class HomeCubit extends Cubit<HomeState> {
           (route) => false);
     } on Exception catch (e) {
       if (e is StripeException) {
-      } else {
-      }
-    } catch (e) {
-    }
+      } else {}
+    } catch (e) {}
   }
 
   createPaymentIntent(
@@ -244,8 +237,7 @@ class HomeCubit extends Cubit<HomeState> {
         return value.data;
       });
       return response;
-    } catch (err) {
-    }
+    } catch (err) {}
   }
 
   calculateAmount(String amount) {
@@ -319,11 +311,12 @@ class HomeCubit extends Cubit<HomeState> {
             isTest: isTest,
             student_id: childId)
         .then((value) {
-      if (value.data['message'] ==
-          "Level 1 does not exist within this category.") {
+      if (value.data['message'] == "Level 1 does not exist within this category.") {
         toast(msg: value.data['message'], color: Colors.red);
+        loading = false;
         emit(EnrollSutdentsErrorState());
       } else {
+        loading = false;
         toast(msg: value.data['message'], color: Colors.green);
         getLevelById(studentId: childId, catId: category_id);
         emit(EnrollSutdentsSuccessState());
@@ -347,11 +340,15 @@ class HomeCubit extends Cubit<HomeState> {
 
   LevelModel? levelModel;
 
-  void getLevel({int? id}) {
+  void getLevel({int? catId}) {
     emit(GetLevelLoadingState());
-    DioHelper.getData(url: 'levels', lang: lang, catid: id).then((value) {
-      levelModel = LevelModel.fromJson(value.data);
-      emit(GetLevelSuccessState());
+    DioHelper.getData(
+      url: 'levels',
+      lang: lang,
+      catid: catId,
+    ).then((value) {
+      var list = LevelResponse.fromJson(value.data, catId ?? 0).data;
+      emit(GetLevelSuccessState(levels: list));
     }).catchError((error) {
       emit(GetLevelErrorState());
     });
@@ -359,16 +356,18 @@ class HomeCubit extends Cubit<HomeState> {
 
   LevelModelById? levelModelById;
 
+  List<LevelData> levels = [];
+
   void getLevelById({int? catId, int? studentId}) {
     emit(GetLevelLoadingState());
     DioHelper.getData(
-            url: 'get-level',
+            url: 'levels',
             catid: catId,
             studId: studentId,
             token: CacheHelper.getData(key: 'token_student'))
         .then((value) {
-      levelModelById = LevelModelById.fromJson(value.data);
-      emit(GetLevelSuccessState());
+      levelModel = LevelModel.fromJson(value.data);
+      emit(GetLevelSuccessState(levels: []));
     }).catchError((error) {
       emit(GetLevelErrorState());
     });
@@ -471,8 +470,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   void getMyChildren() {
     emit(GetMyChildrenLoadingState());
-    DioHelper.getData(
-            url: 'students', token: CacheHelper.getData(key: 'token_student'))
+    DioHelper.getData(url: 'students', token: CacheHelper.getData(key: 'token_student'))
         .then((value) {
       if (value.statusCode == 200) {
         myChildrenModel = MyChildrenModel.fromJson(value.data);
@@ -511,9 +509,7 @@ class HomeCubit extends Cubit<HomeState> {
   void getTest({required int id}) {
     emit(GetTestLoadingState());
     DioHelper.getData(
-            url: 'exam',
-            catid: id,
-            token: CacheHelper.getData(key: 'token_student'))
+            url: 'exam', catid: id, token: CacheHelper.getData(key: 'token_student'))
         .then((value) {
       log(value.data.toString());
       testModel = TestModel.fromJson(value.data);
@@ -531,8 +527,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   void getPaymentHistory() {
     emit(GetPaymentHistoryLoadingState());
-    DioHelper.getData(
-            url: 'invoices', token: CacheHelper.getData(key: 'token_student'))
+    DioHelper.getData(url: 'invoices', token: CacheHelper.getData(key: 'token_student'))
         .then((value) {
       if (value.statusCode == 200) {
         paymentHistoryModel = PaymentHistoryModel.fromJson(value.data);
