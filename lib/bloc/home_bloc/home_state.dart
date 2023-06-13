@@ -48,7 +48,13 @@ class EnrollSutdentsSuccessState extends HomeState {}
 
 class EnrollSutdentsErrorState extends HomeState {}
 
-class GetLevelLoadingState extends HomeState {}
+class GetLevelLoadingState extends HomeState {
+  int index = -1;
+
+  GetLevelLoadingState({
+    required this.index,
+  });
+}
 
 class GetLevelSuccessState extends HomeState {
   List<LevelData> levels = [];
@@ -64,9 +70,6 @@ class GetLevelSuccessState extends HomeState {
       levels: levels ?? this.levels,
     );
   }
-
-
-
 }
 
 class GetLevelErrorState extends HomeState {}

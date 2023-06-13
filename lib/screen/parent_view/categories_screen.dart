@@ -200,42 +200,40 @@ Widget CourseTile(context,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    width: width! * 0.55,
-                    child: AutoSizeText(
-                      '${model!.data[index!].name}',
-                      style: Theme.of(context).textTheme.headline3,
-                      textScaleFactor: 1,
-                      minFontSize: 21,
-                      maxFontSize: 23,
-                    ),
+                  AutoSizeText(
+                    '${model!.data[index!].name}',
+                    style: Theme.of(context).textTheme.headline3,
+                    textScaleFactor: 1,
+                    minFontSize: 15,
+                    maxFontSize: 23,
                   ),
-                  Spacer(),
                   TextButton(
                     onPressed: () {
                       if (CacheHelper.getData(key: 'token_student') != null) {
-                        get.getLevel(catId: model.data[index].id);
+                        get.getLevel(catId: model.data[index].id, index: index);
                       } else {
                         showDialog(
                             context: context,
                             builder: (context) =>
-                                dialogInRegister(width * 0.8, height! * 0.3, context));
+                                dialogInRegister(width! * 0.8, height! * 0.3, context));
                       }
                     },
-                    child: (state is GetLevelLoadingState)
+                    child: (state is GetLevelLoadingState && state.index == index)
                         ? Center(
-                      child: AdabtiveIndecator(os: getOS()),
-                    )
+                            child: AdabtiveIndecator(os: getOS()),
+                          )
                         : AutoSizeText(
                             S.of(context).see_Levels,
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyText2!
-                                .copyWith(color: Colors.blue),
+                                .copyWith(color: Colors.teal),
+                            softWrap: true,
                             textScaleFactor: 1,
-                            minFontSize: 10,
-                            maxFontSize: 12,
+                            minFontSize: 12,
+                            maxFontSize: 14,
                           ),
                   )
                 ],

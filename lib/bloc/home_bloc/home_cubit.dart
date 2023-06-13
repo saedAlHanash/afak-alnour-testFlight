@@ -340,8 +340,8 @@ class HomeCubit extends Cubit<HomeState> {
 
   LevelModel? levelModel;
 
-  void getLevel({int? catId}) {
-    emit(GetLevelLoadingState());
+  void getLevel({int? catId, required int index}) {
+    emit(GetLevelLoadingState(index: index));
     DioHelper.getData(
       url: 'levels',
       lang: lang,
@@ -359,7 +359,7 @@ class HomeCubit extends Cubit<HomeState> {
   List<LevelData> levels = [];
 
   void getLevelById({int? catId, int? studentId}) {
-    emit(GetLevelLoadingState());
+    emit(GetLevelLoadingState(index: -1));
     DioHelper.getData(
             url: 'levels',
             catid: catId,
