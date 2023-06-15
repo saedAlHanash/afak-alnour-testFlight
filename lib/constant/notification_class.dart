@@ -19,7 +19,6 @@ static Future showNotification({
         android: AndroidNotificationDetails(
           'channel Id',
           'channel Name',
-          'channel Description',
           enableVibration: true,
           playSound: true,
           enableLights: true,

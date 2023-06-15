@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 
 import 'bloc/bloc_observer.dart';
@@ -16,24 +17,61 @@ import 'data/local/cache_helper.dart';
 import 'data/remote/dio_helper.dart';
 import 'main_controller.dart';
 
-Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
+@pragma('vm:entry-point')
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  final notification = message.notification;
+
+  String title = '';
+  String body = '';
+
+  if (notification != null) {
+    title = notification.title ?? '';
+    body = notification.body ?? '';
+  } else {
+    title = message.data['title'] ?? '';
+    body = message.data['body'] ?? '';
+  }
+
+  Note.showBigTextNotification(title: title, body: body);
 }
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Note.initialize();
   await Firebase.initializeApp();
   await FlutterDownloader.initialize(debug: false, ignoreSsl: true);
 
-  FirebaseMessaging.onMessage.listen((event) {
-    NotificationApi.showNotification(
-      title: event.notification!.title,
-      body: event.notification!.body,
-    );
+  await FirebaseMessaging.instance.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
+
+  FirebaseMessaging.onMessage.listen((message) {
+    final notification = message.notification;
+
+    String title = '';
+    String body = '';
+
+    if (notification != null) {
+      title = notification.title ?? '';
+      body = notification.body ?? '';
+    } else {
+      title = message.data['title'] ?? '';
+      body = message.data['body'] ?? '';
+    }
+    Note.showBigTextNotification(title: title, body: body);
   });
 
-  FirebaseMessaging.onMessageOpenedApp.listen((event) {
-  });
+  FirebaseMessaging.onMessageOpenedApp.listen((event) {});
 
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
@@ -46,8 +84,7 @@ void main() async {
   try {
     var token = await FirebaseMessaging.instance.getToken();
     CacheHelper.setData(key: 'fireBase_token', value: token);
-  } catch (e) {
-  }
+  } catch (e) {}
 
   BlocOverrides.runZoned(
     () {
@@ -59,4 +96,41 @@ void main() async {
     },
     blocObserver: MyBlocObserver(),
   );
+}
+
+class Note {
+  static Future initialize() async {
+    var androidInitialize = const AndroidInitializationSettings('mipmap/ic_launcher');
+    var iOSInitialize = const DarwinInitializationSettings();
+    var initializationsSettings =
+        InitializationSettings(android: androidInitialize, iOS: iOSInitialize);
+    await flutterLocalNotificationsPlugin.initialize(initializationsSettings);
+  }
+
+  static Future showBigTextNotification({
+    var id = 0,
+    required String title,
+    required String body,
+    var payload,
+  }) async {
+    // var vibrationPattern = Int64List(2);
+    // vibrationPattern[0] = 1000;
+    // vibrationPattern[1] = 1000;
+
+    const androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      'Afak',
+      'Afak App',
+      playSound: true,
+      importance: Importance.defaultImportance,
+      priority: Priority.high,
+    );
+
+    var not = const NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+      iOS: DarwinNotificationDetails(),
+    );
+
+    await flutterLocalNotificationsPlugin.show(
+        (DateTime.now().millisecondsSinceEpoch ~/ 1000), title, body, not);
+  }
 }
