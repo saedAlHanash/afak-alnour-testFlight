@@ -86,19 +86,19 @@ void main() async {
   await CacheHelper.init();
   await DioHelper.init();
   Stripe.publishableKey =
-      'pk_test_51LDmtnIaXvRCgKNekxlvu2rSujnL8kidAnZ4W7tYmqAFr6VHGOIAJQTCg0ZpS6cRQVla6J4p56i6pZAjk4pRda670010Zn3GeH';
+  'pk_test_51LDmtnIaXvRCgKNekxlvu2rSujnL8kidAnZ4W7tYmqAFr6VHGOIAJQTCg0ZpS6cRQVla6J4p56i6pZAjk4pRda670010Zn3GeH';
   try {
     var token = await FirebaseMessaging.instance.getToken();
     CacheHelper.setData(key: 'fireBase_token', value: token);
   } catch (e) {}
 
   BlocOverrides.runZoned(
-    () {
+        () {
       runApp(
-          // DevicePreview(builder: (context) =>
+        // DevicePreview(builder: (context) =>
           MyApp()
-          // )
-          );
+        // )
+      );
     },
     blocObserver: MyBlocObserver(),
   );
@@ -109,7 +109,7 @@ class Note {
     var androidInitialize = const AndroidInitializationSettings('mipmap/ic_launcher');
     var iOSInitialize = const DarwinInitializationSettings();
     var initializationsSettings =
-        InitializationSettings(android: androidInitialize, iOS: iOSInitialize);
+    InitializationSettings(android: androidInitialize, iOS: iOSInitialize);
     await flutterLocalNotificationsPlugin.initialize(initializationsSettings);
   }
 
@@ -137,6 +137,8 @@ class Note {
     );
 
     await flutterLocalNotificationsPlugin.show(
-        (DateTime.now().millisecondsSinceEpoch ~/ 1000), title, body, not);
+        (DateTime
+            .now()
+            .millisecondsSinceEpoch ~/ 1000), title, body, not);
   }
 }
