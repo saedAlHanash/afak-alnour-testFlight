@@ -15,6 +15,7 @@ import 'package:flutter/services.dart';
 
 import 'data/local/cache_helper.dart';
 import 'data/remote/dio_helper.dart';
+import 'firebase_options.dart';
 import 'main_controller.dart';
 
 final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
@@ -38,11 +39,16 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   Note.showBigTextNotification(title: title, body: body);
 }
 
+/*
+keytool -list -v -alias androiddebugkey -keystore %USERPROFILE%\.android\debug.keystore
+ */
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   await Note.initialize();
-  await Firebase.initializeApp();
   await FlutterDownloader.initialize(debug: false, ignoreSsl: true);
 
   await FirebaseMessaging.instance.requestPermission(
