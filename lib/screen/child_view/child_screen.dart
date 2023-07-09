@@ -25,8 +25,8 @@ class ChildScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: SfCalendar(
                   view: CalendarView.schedule,
-                  dataSource: MeetingDataSource(
-                      getAppointment(context, model: get.model)),
+                  dataSource:
+                      MeetingDataSource(getAppointment(context, model: get.model)),
                   controller: get.calendarController,
                   allowedViews: [
                     CalendarView.day,
@@ -41,8 +41,7 @@ class ChildScreen extends StatelessWidget {
                   onTap: (CalendarTapDetails details) async {
                     if (details.targetElement == CalendarElement.appointment ||
                         details.targetElement == CalendarElement.agenda) {
-                      final Appointment appointmentDetails =
-                          details.appointments![0];
+                      final Appointment appointmentDetails = details.appointments![0];
                       if (appointmentDetails.notes != null) {
                         var url = appointmentDetails.notes;
                         if (await launchUrl(Uri.parse(url!),
@@ -64,8 +63,7 @@ class ChildScreen extends StatelessWidget {
                           .headline3!
                           .copyWith(color: Colors.white, fontSize: 14)),
                   monthViewSettings: MonthViewSettings(
-                      appointmentDisplayMode:
-                          MonthAppointmentDisplayMode.appointment),
+                      appointmentDisplayMode: MonthAppointmentDisplayMode.appointment),
                 ),
               )
             : Center(
@@ -74,6 +72,36 @@ class ChildScreen extends StatelessWidget {
               ));
       },
     );
+  }
+}
+
+extension SplitByLength on String {
+  List<String> splitByLength1(int length, {bool ignoreEmpty = false}) {
+    List<String> pieces = [];
+
+    for (int i = 0; i < this.length; i += length) {
+      int offset = i + length;
+      var piece = substring(i, offset >= this.length ? this.length : offset);
+
+      if (ignoreEmpty) {
+        piece = piece.replaceAll(RegExp(r'\s+'), '');
+      }
+
+      pieces.add(piece);
+    }
+    return pieces;
+  }
+
+  int get numberOnly {
+    final regex = RegExp(r'\d+');
+
+    final numbers = regex.allMatches(this).map((match) => match.group(0)).join();
+
+    try {
+      return int.parse(numbers);
+    } on Exception {
+      return 0;
+    }
   }
 }
 
@@ -91,12 +119,12 @@ List<Appointment> getAppointment(context, {MyCoursesChildModel? model}) {
     var endDate1 = element.end_date!.split('-');
     day = [];
     startTime = DateTime(
-        int.parse(startDate1[0]),
-        int.parse(startDate1[1]),
-        int.parse(startDate1[2]),
-        int.parse(startTime1[0]),
-        int.parse(startTime1[1]),
-        int.parse(startTime1[2]));
+        int.parse(startDate1[0].numberOnly.toString()),
+        int.parse(startDate1[1].numberOnly.toString()),
+        int.parse(startDate1[2].numberOnly.toString()),
+        int.parse(startTime1[0].numberOnly.toString()),
+        int.parse(startTime1[1].numberOnly.toString()),
+        int.parse(startTime1[2].numberOnly.toString()));
     endTime = startTime.add(Duration(minutes: element.session_duration!));
 
     ruleTime = DateTime(int.parse(endDate1[0]), int.parse(endDate1[1]),
@@ -109,11 +137,9 @@ List<Appointment> getAppointment(context, {MyCoursesChildModel? model}) {
     meetings.add(Appointment(
         startTime: startTime,
         endTime: endTime,
-        subject: HomeCubit.get(context).lang == 'ar'
-            ? element.ar_name!
-            : element.en_name!,
-        color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt())
-            .withOpacity(1.0),
+        subject:
+            HomeCubit.get(context).lang == 'ar' ? element.ar_name! : element.en_name!,
+        color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0),
         notes: element.location,
         recurrenceRule:
             'FREQ=WEEKLY;BYDAY=${day.toString().substring(1, day.toString().length - 1)};UNTIL=$ruleTime'));

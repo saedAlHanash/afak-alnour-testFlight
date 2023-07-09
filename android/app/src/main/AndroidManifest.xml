@@ -28,10 +28,12 @@
         android:name="${applicationName}"
        android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
+
        <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver"
            android:exported="false"
            tools:ignore="MissingClass">
        </receiver>
+
        <activity
             android:name=".MainActivity"
             android:exported="true"
