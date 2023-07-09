@@ -1,0 +1,43 @@
+{
+  status: 1,
+  "data": [
+    {
+      id: 2,
+      ar_name: "رياضيات - bla bla - bla bla",
+      en_name: "math - bla - bla bla",
+      ar_description: "bla bla",
+      en_description: "bla bla",
+      "public/images/courses/ar/aulTuY8MSYTS7sAgm0PPH0LY1fdl0Y7eQUALU7PN.png"
+      "public/images/courses/en/sZVaUowKxsQKnqxSkvW0xHomGp3RAfzuNLzPyyIn.jpg"
+      code: "{"
+      course_code
+      ":"
+      MBL1-1
+      ","
+      group_number
+      ":2}",
+      course_number: 1,
+      level_id: 1,
+      category_order_id: 1,
+      gender: "both",
+      population: "group",
+      location: "https://meet.google.com/vpf-iade-hum",
+      purpose: "profit",
+      price: 2000,
+      start_date: "2023-07-03",
+      end_date: "2023-10-03",
+      days: "["
+      monday
+      "]",
+      start_time: "05:00 PM",
+      session_duration: 60,
+      min_participants: 2,
+      max_participants: 5,
+      course_type_id: 1,
+      teacher_id: 3,
+      created_at: "2023-07-03T12:00:11.000000Z",
+      updated_at: "2023-07-04T12:43:48.000000Z",
+      deleted_at: null
+    }
+  ]
+}

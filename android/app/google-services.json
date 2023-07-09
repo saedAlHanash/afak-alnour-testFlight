@@ -1,0 +1,90 @@
+{
+  "project_info": {
+    "project_number": "747835007262",
+    "project_id": "afaq-academy",
+    "storage_bucket": "afaq-academy.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:747835007262:android:bf9f175f4a30258d66e90f",
+        "android_client_info": {
+          "package_name": "com.app.afaq.teacher.afaq_teacher"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "747835007262-4ql3n6534cfdfu2uok85eolq5l581pqu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.afaq.teacher.afaq_teacher",
+            "certificate_hash": "dd54cb958d08bf006a8de4483f8ea9ff8ff93ef2"
+          }
+        },
+        {
+          "client_id": "747835007262-6j9ems31tbelrsgh3fhrkn7h25jr4oms.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDf_dY7pi5NyeFkQXCow_3RGlzm3hYNP4o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "747835007262-6j9ems31tbelrsgh3fhrkn7h25jr4oms.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "747835007262-7vof38n7u0ld7dev0nd0624he3sggohp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.afaq.afaqAlnourAcademy"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:747835007262:android:3fcb48702ce6599e66e90f",
+        "android_client_info": {
+          "package_name": "com.example.afaq_alnour_academy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "747835007262-6j9ems31tbelrsgh3fhrkn7h25jr4oms.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDf_dY7pi5NyeFkQXCow_3RGlzm3hYNP4o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "747835007262-6j9ems31tbelrsgh3fhrkn7h25jr4oms.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "747835007262-7vof38n7u0ld7dev0nd0624he3sggohp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.afaq.afaqAlnourAcademy"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
