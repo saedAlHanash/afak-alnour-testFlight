@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>747835007262-tfliaomfk119v7cjl7gk6qsn7nnihlca.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.747835007262-tfliaomfk119v7cjl7gk6qsn7nnihlca</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>747835007262-4ql3n6534cfdfu2uok85eolq5l581pqu.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBeK_RtISAV1WTV_HQq_z9Mpm5kIfd-9Dg</string>
+	<key>GCM_SENDER_ID</key>
+	<string>747835007262</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.app.afaq.teacher.afaqTeacher</string>
+	<key>PROJECT_ID</key>
+	<string>afaq-academy</string>
+	<key>STORAGE_BUCKET</key>
+	<string>afaq-academy.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:747835007262:ios:01887d455cb3531f66e90f</string>
+</dict>
+</plist>
