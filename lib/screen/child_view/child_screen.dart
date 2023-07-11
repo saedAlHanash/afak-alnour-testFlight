@@ -123,8 +123,7 @@ List<Appointment> getAppointment(context, {MyCoursesChildModel? model}) {
         int.parse(startDate1[1].numberOnly.toString()),
         int.parse(startDate1[2].numberOnly.toString()),
         int.parse(startTime1[0].numberOnly.toString()),
-        int.parse(startTime1[1].numberOnly.toString()),
-        int.parse(startTime1[2].numberOnly.toString()));
+        int.parse(startTime1[1].numberOnly.toString()),);
     endTime = startTime.add(Duration(minutes: element.session_duration!));
 
     ruleTime = DateTime(int.parse(endDate1[0]), int.parse(endDate1[1]),
