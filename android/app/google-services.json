@@ -7,6 +7,50 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:747835007262:android:856b5069cad6183266e90f",
+        "android_client_info": {
+          "package_name": "com.afaq.afaq_alnour_academy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "747835007262-ad5pn72d0t39p5qs2tof7itl97gh3p4l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.afaq.afaq_alnour_academy",
+            "certificate_hash": "e37ad461ba2172464e66075d8d8d6b2e9cb17daa"
+          }
+        },
+        {
+          "client_id": "747835007262-6j9ems31tbelrsgh3fhrkn7h25jr4oms.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDf_dY7pi5NyeFkQXCow_3RGlzm3hYNP4o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "747835007262-6j9ems31tbelrsgh3fhrkn7h25jr4oms.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "747835007262-7vof38n7u0ld7dev0nd0624he3sggohp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.afaq.afaqAlnourAcademy"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:747835007262:android:bf9f175f4a30258d66e90f",
         "android_client_info": {
           "package_name": "com.app.afaq.teacher.afaq_teacher"

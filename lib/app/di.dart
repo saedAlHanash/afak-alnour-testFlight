@@ -32,7 +32,7 @@ final instance = GetIt.instance;
 
 Future<void> initAppModule() async {
   final sharedPrefs = await SharedPreferences.getInstance();
-  await Firebase.initializeApp();
+
   await FlutterDownloader.initialize(debug: false, ignoreSsl: true);
 
   instance.registerLazySingleton<SharedPreferences>(() => sharedPrefs);
