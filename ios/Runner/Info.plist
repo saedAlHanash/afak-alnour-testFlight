@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Afak Tetcher</string>
+	<string>Afaq Teacher</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -13,7 +13,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>afak_tetcher</string>
+	<string>afaq_teacher</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -28,6 +28,13 @@
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+	<key>LSApplicationQueriesSchemes</key>
+        	<array>
+        		<string>sms</string>
+        		<string>http</string>
+        		<string>https</string>
+        		<string>tel</string>
+        	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -45,6 +52,19 @@
 	<false/>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key><true/>
+    </dict>
+       <!-- changes this number to configure the maximum number of concurrent tasks -->
+            <key>FDMaximumConcurrentTasks</key>
+            <integer>5</integer>
+            <key>FDAllFilesDownloadedMessage</key>
+            <string>All files have been downloaded</string>
+            		<key>NSCameraUsageDescription</key>
+                	<string>Afaq Teacher would like to access camera to capture a photo to your profile</string>
+                	<key>NSPhotoLibraryUsageDescription</key>
+                	<string>Afaq Teacher would like to access your files to add a file to your profile</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 </dict>
