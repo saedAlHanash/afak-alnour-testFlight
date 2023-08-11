@@ -67,10 +67,10 @@ class _HomeWorkScreenState extends State<HomeWorkScreen> {
                         }).toList(),
                         onChanged: (dynamic value) {},
                         decoration: InputDecoration(
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10)),
+                          focusedBorder:
+                              OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                          enabledBorder:
+                              OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
                         ),
                       ),
                     ),
@@ -100,9 +100,7 @@ class _HomeWorkScreenState extends State<HomeWorkScreen> {
                                       child: Text(
                                         e.order.toString(),
                                         textScaleFactor: 1,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyText2,
+                                        style: Theme.of(context).textTheme.bodyText2,
                                       ),
                                       value: e.id,
                                       onTap: () {
@@ -129,29 +127,28 @@ class _HomeWorkScreenState extends State<HomeWorkScreen> {
                 height: height * 0.03,
               ),
               state is! GetSessionsLoadingState
-                  ? get.sessionModel != null ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          S.of(context).selectHomeworkToDownloadOrOpen,
-                          style: Theme.of(context).textTheme.bodyText2,
-                          textScaleFactor: 1,
-                        ),
-                        TextButton(
-                            onPressed: () {
-                              get.checkFile(get.sessionModel!.homeWork!.url!);
-                            },
-                            child: Text(
-                              get.sessionModel!.homeWork!.name!,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText2!
-                                  .copyWith(
-                                    color: Colors.blue,
-                                  ),
-                            ))
-                      ],
-                    ) : SizedBox()
+                  ? get.sessionModel != null
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              S.of(context).selectHomeworkToDownloadOrOpen,
+                              style: Theme.of(context).textTheme.bodyText2,
+                              textScaleFactor: 1,
+                            ),
+                            TextButton(
+                                onPressed: () {
+                                  get.checkFile(get.sessionModel!.homeWork!.url!);
+                                },
+                                child: Text(
+                                  get.sessionModel!.homeWork!.name!,
+                                  style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                                        color: Colors.blue,
+                                      ),
+                                ))
+                          ],
+                        )
+                      : SizedBox()
                   : Center(child: AdabtiveIndecator(os: getOS())),
             ],
           ),
