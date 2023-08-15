@@ -42,7 +42,7 @@ extension SplitByLength on String {
 }
 
 class HomeController extends GetxController {
-  // late MyCourseModel model;
+  late MyCourseModel model;
   final MyCourseUseCase _useCase = instance<MyCourseUseCase>();
   RxBool isLoading = false.obs;
   final CalendarController calendarController = CalendarController();
