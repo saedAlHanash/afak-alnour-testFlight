@@ -42,7 +42,7 @@ extension SplitByLength on String {
 }
 
 class HomeController extends GetxController {
-  late MyCourseModel model;
+   MyCourseModel? model;
   final MyCourseUseCase _useCase = instance<MyCourseUseCase>();
   RxBool isLoading = false.obs;
   final CalendarController calendarController = CalendarController();
@@ -55,7 +55,7 @@ class HomeController extends GetxController {
     var ruleTime = DateTime(2023, 01, 30, 18, 30, 00);
     List<String> day = [];
 
-    for (var element in model.data) {
+    for (var element in model!.data) {
       var startDate1 = element.start_date.split('-');
       var startTime1 = element.start_time.split(':');
       var endDate1 = element.end_date.split('-');

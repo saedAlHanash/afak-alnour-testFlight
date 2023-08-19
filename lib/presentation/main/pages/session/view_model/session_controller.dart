@@ -2,7 +2,6 @@ import 'dart:io' as io;
 import 'dart:isolate';
 import 'dart:ui';
 
-
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
 import 'package:open_filex/open_filex.dart';
@@ -28,14 +27,11 @@ class SessionController extends GetxController {
   late MyCourseModel myCourseModel;
   MySessionsModel? mySessionsModel;
   StudentInCourseModel? studentInCourseModel;
-  final GetMySessionsUseCase _getMySessionsUseCase =
-      instance<GetMySessionsUseCase>();
-  final GetSessionByIdUseCase _getSessionByIdUseCase =
-      instance<GetSessionByIdUseCase>();
+  final GetMySessionsUseCase _getMySessionsUseCase = instance<GetMySessionsUseCase>();
+  final GetSessionByIdUseCase _getSessionByIdUseCase = instance<GetSessionByIdUseCase>();
   final GetStudentInCourseUseCase _getStudentInCourseUseCase =
       instance<GetStudentInCourseUseCase>();
-  final SetAttendanceUseCase _setAttendanceUseCase =
-      instance<SetAttendanceUseCase>();
+  final SetAttendanceUseCase _setAttendanceUseCase = instance<SetAttendanceUseCase>();
   RxList<int> childAttendance = <int>[].obs;
   RxBool mySessionsLoading = false.obs;
   RxBool getSessionByIdLoading = false.obs;
@@ -49,8 +45,7 @@ class SessionController extends GetxController {
     attendanceRequest = AttendanceRequest(
         students: childAttendance.value,
         status: 'completed',
-        date:
-            '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}');
+        date: '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}');
     (await _setAttendanceUseCase
             .execute(SetAttendanceUseCaseInput(attendanceRequest, sessionId)))
         .fold((l) {
@@ -61,7 +56,7 @@ class SessionController extends GetxController {
   }
 
   getCourseItems() {
-    myCourseModel = Get.find<HomeController>().model;
+    myCourseModel = Get.find<HomeController>().model!;
   }
 
   getStudentInCourse(int courseId) async {
@@ -163,15 +158,13 @@ class SessionController extends GetxController {
 
   @pragma('vm:entry-point')
   static void downloadCallBack(id, status, progress) {
-    final SendPort? sendPort =
-        IsolateNameServer.lookupPortByName("downloader_send_port");
+    final SendPort? sendPort = IsolateNameServer.lookupPortByName("downloader_send_port");
     sendPort!.send(progress);
   }
 
   @override
   void onInit() {
-    IsolateNameServer.registerPortWithName(
-        receivePort.sendPort, "downloader_send_port");
+    IsolateNameServer.registerPortWithName(receivePort.sendPort, "downloader_send_port");
     receivePort.listen((message) {
       progress.value = message;
     });
