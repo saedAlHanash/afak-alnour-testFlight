@@ -15,6 +15,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../data/remote/dio_helper.dart';
+import '../login_screen.dart';
+import '../parent_view/afaq_layout.dart';
+
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
 
@@ -24,23 +28,16 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int currentIndex = 0;
-  List<Widget> screen = [
-    ChildScreen(),
-    HomeWorkScreen()
-  ];
+  List<Widget> screen = [ChildScreen(), HomeWorkScreen()];
 
-
-
-
+  var loading = false;
 
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
 
-
-
-    return BlocConsumer<ChildCubit,ChildState>(
+    return BlocConsumer<ChildCubit, ChildState>(
       listener: (context, state) {},
       builder: (context, state) {
         var get = ChildCubit.get(context);
@@ -59,8 +56,8 @@ class _MainScreenState extends State<MainScreen> {
                   child: Text(
                     S.of(context).today,
                     style: Theme.of(context).textTheme.headline3!.copyWith(
-                      fontSize: 20,
-                    ),
+                          fontSize: 20,
+                        ),
                     textScaleFactor: 1,
                   )),
               SizedBox(
@@ -80,8 +77,14 @@ class _MainScreenState extends State<MainScreen> {
           appBar: appBar[currentIndex],
           bottomNavigationBar: BottomNavigationBar(
             items: [
-              BottomNavigationBarItem(icon: Icon(Icons.home_rounded),label: S.of(context).home,),
-              BottomNavigationBarItem(icon: Icon(Icons.cast_for_education),label: S.of(context).homework,),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home_rounded),
+                label: S.of(context).home,
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.cast_for_education),
+                label: S.of(context).homework,
+              ),
             ],
             onTap: (int index) {
               setState(() {
@@ -192,7 +195,7 @@ class _MainScreenState extends State<MainScreen> {
                             MaterialPageRoute(
                               builder: (context) => WelcomeScreen(),
                             ),
-                                (route) => false);
+                            (route) => false);
                         get.model = null;
                       },
                       child: Row(
@@ -227,9 +230,7 @@ class _MainScreenState extends State<MainScreen> {
                         width: width * 0.03,
                       ),
                       Switch.adaptive(
-                          value: HomeCubit.get(context).lang == 'en'
-                              ? true
-                              : false,
+                          value: HomeCubit.get(context).lang == 'en' ? true : false,
                           onChanged: (value) {
                             if (value) {
                               CacheHelper.setData(key: 'lang', value: 'en');
@@ -280,6 +281,46 @@ class _MainScreenState extends State<MainScreen> {
                         if (await launchUrl(Uri.parse(url),
                             mode: LaunchMode.inAppWebView)) {}
                       }),
+                  StatefulBuilder(builder: (context, mState) {
+                    if (loading) return CircularProgressIndicator.adaptive();
+                    return TextButton(
+                      child: AutoSizeText(
+                        'Delete Account',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline3!
+                            .copyWith(color: Colors.grey),
+                        textScaleFactor: 1,
+                        minFontSize: 20,
+                        maxFontSize: 22,
+                      ),
+                      onPressed: () async {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return DeleteAccountDialog();
+                          },
+                        ).then((confirmed) {
+                          if (!confirmed) return;
+
+                          mState(() => loading = true);
+                          DioHelper.deleteData(
+                                  url: 'guardian/delete',
+                                  data: {},
+                                  token: CacheHelper.getData(key: 'token_student'))
+                              .then((value) {
+                            mState(() => loading = false);
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => LoginScreen(),
+                                ),
+                                (route) => false);
+                          });
+                        });
+                      },
+                    );
+                  }),
                   SizedBox(
                     height: height * 0.01,
                   ),

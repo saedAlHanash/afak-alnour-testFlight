@@ -28,8 +28,7 @@ class ChildCubit extends Cubit<ChildState> {
   void getMyCourses() {
     emit(GetMyCoursesLoadingState());
     DioHelper.getData(
-            url: 'courses/my-courses',
-            token: CacheHelper.getData(key: 'token_child'))
+            url: 'courses/my-courses', token: CacheHelper.getData(key: 'token_child'))
         .then((value) {
       model = MyCoursesChildModel.fromJson(value.data);
       emit(GetMyCoursesSuccessState());
@@ -79,14 +78,14 @@ class ChildCubit extends Cubit<ChildState> {
   getSessionById(int sessionId) async {
     emit(GetSessionsLoadingState());
     await DioHelper.getData(
-            url: 'session',
-            token: CacheHelper.getData(key: 'token_child'),
-            sessionId: sessionId)
-        .then((value) {
+      url: 'session',
+      token: CacheHelper.getData(key: 'token_child'),
+      sessionId: sessionId,
+    ).then((value) {
       if (value.statusCode == 200) {
         sessionModel = SessionModel.froJson(value.data);
         emit(GetSessionsSuccessState());
-      }else {
+      } else {
         emit(GetSessionsErrorState());
       }
     }).catchError((error) {
@@ -113,9 +112,7 @@ class ChildCubit extends Cubit<ChildState> {
             openFileFromNotification: true,
             fileName: url.split("/").last,
             showNotification: true);
-      } catch (e) {
-
-      }
+      } catch (e) {}
     } else {}
   }
 
@@ -149,13 +146,9 @@ class ChildCubit extends Cubit<ChildState> {
     final result = await OpenFilex.open(path);
   }
 
-
-
   @pragma('vm:entry-point')
   static void downloadCallBack(id, status, progress) {
-    final SendPort? sendPort =
-    IsolateNameServer.lookupPortByName("downloader_send_port");
+    final SendPort? sendPort = IsolateNameServer.lookupPortByName("downloader_send_port");
     sendPort!.send(progress);
   }
-
 }

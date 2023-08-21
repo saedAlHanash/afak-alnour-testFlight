@@ -1,5 +1,6 @@
 import 'package:afaq_alnour_academy/bloc/home_bloc/home_cubit.dart';
 import 'package:afaq_alnour_academy/data/local/cache_helper.dart';
+import 'package:afaq_alnour_academy/data/remote/dio_helper.dart';
 import 'package:afaq_alnour_academy/generated/l10n.dart';
 import 'package:afaq_alnour_academy/screen/about_screen.dart';
 import 'package:afaq_alnour_academy/screen/parent_view/my_children_screen.dart';
@@ -10,6 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../bloc/home_bloc/home_state.dart';
+import '../login_screen.dart';
 import 'all_course_screen.dart';
 import 'all_package_screen.dart';
 
@@ -20,8 +22,7 @@ class AfaqLayout extends StatefulWidget {
   State<AfaqLayout> createState() => _AfaqLayoutState();
 }
 
-class _AfaqLayoutState extends State<AfaqLayout>  with WidgetsBindingObserver{
-
+class _AfaqLayoutState extends State<AfaqLayout> with WidgetsBindingObserver {
   @override
   void initState() {
     // TODO: implement initState
@@ -36,15 +37,15 @@ class _AfaqLayoutState extends State<AfaqLayout>  with WidgetsBindingObserver{
     if (state == AppLifecycleState.inactive) {}
     if (state == AppLifecycleState.detached) {}
     if (state == AppLifecycleState.paused) {
-      if(CacheHelper.getData(key: 'card_time') == null)
-      CacheHelper.setData(key: 'card_time', value: DateTime.now().toString());
+      if (CacheHelper.getData(key: 'card_time') == null)
+        CacheHelper.setData(key: 'card_time', value: DateTime.now().toString());
     }
 
     if (state == AppLifecycleState.resumed) {}
   }
 
   @override
-  Widget build(BuildContext context)  {
+  Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
 
@@ -52,16 +53,14 @@ class _AfaqLayoutState extends State<AfaqLayout>  with WidgetsBindingObserver{
       listener: (context, state) {},
       builder: (context, state) {
         var get = HomeCubit.get(context);
-        if(get.cardModel.isEmpty){
+        if (get.cardModel.isEmpty) {
           CacheHelper.removeData(key: 'card_time');
         }
         List<AppBar> appBar = [
           AppBar(
             title: AutoSizeText(
               S.of(context).home,
-              style: Theme.of(context)
-                  .textTheme
-                  .headline3,
+              style: Theme.of(context).textTheme.headline3,
               textScaleFactor: 1,
               minFontSize: 21,
               maxFontSize: 23,
@@ -71,9 +70,7 @@ class _AfaqLayoutState extends State<AfaqLayout>  with WidgetsBindingObserver{
           AppBar(
             title: AutoSizeText(
               S.of(context).child_courses,
-              style: Theme.of(context)
-                  .textTheme
-                  .headline3,
+              style: Theme.of(context).textTheme.headline3,
               textScaleFactor: 1,
               minFontSize: 21,
               maxFontSize: 23,
@@ -83,9 +80,7 @@ class _AfaqLayoutState extends State<AfaqLayout>  with WidgetsBindingObserver{
           AppBar(
             title: AutoSizeText(
               S.of(context).payment_history,
-              style: Theme.of(context)
-                  .textTheme
-                  .headline3,
+              style: Theme.of(context).textTheme.headline3,
               textScaleFactor: 1,
               minFontSize: 21,
               maxFontSize: 23,
@@ -95,9 +90,7 @@ class _AfaqLayoutState extends State<AfaqLayout>  with WidgetsBindingObserver{
           AppBar(
             title: AutoSizeText(
               S.of(context).all_courses,
-              style: Theme.of(context)
-                  .textTheme
-                  .headline3,
+              style: Theme.of(context).textTheme.headline3,
               textScaleFactor: 1,
               minFontSize: 21,
               maxFontSize: 23,
@@ -106,19 +99,18 @@ class _AfaqLayoutState extends State<AfaqLayout>  with WidgetsBindingObserver{
           ),
         ];
         List<BottomNavigationBarItem> item = [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home), label: S.of(context).home),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: S.of(context).home),
           BottomNavigationBarItem(
               icon: Icon(Icons.subject), label: S.of(context).child_courses),
           BottomNavigationBarItem(
               icon: Icon(Icons.payments_rounded), label: S.of(context).payment_history),
           BottomNavigationBarItem(
               icon: Icon(Icons.credit_card),
-              label: "${S.of(context).card} ${get.cardModel.isNotEmpty ? get.cardModel.length : ""}"),
+              label:
+                  "${S.of(context).card} ${get.cardModel.isNotEmpty ? get.cardModel.length : ""}"),
         ];
         return Directionality(
-          textDirection:
-              get.lang == 'ar' ? TextDirection.rtl : TextDirection.ltr,
+          textDirection: get.lang == 'ar' ? TextDirection.rtl : TextDirection.ltr,
           child: Scaffold(
             drawerEdgeDragWidth: width * 0.2,
             drawer: drawer(context, width: width, height: height),
@@ -132,11 +124,11 @@ class _AfaqLayoutState extends State<AfaqLayout>  with WidgetsBindingObserver{
                   get.myChildrenModel = null;
                   get.getMyChildren();
                 }
-                if(index == 2){
+                if (index == 2) {
                   get.paymentHistoryModel = null;
                   get.getPaymentHistory();
                 }
-                if(index == 3){
+                if (index == 3) {
                   get.initCardList();
                 }
               },
@@ -162,6 +154,7 @@ Widget drawer(context, {double? width, double? height}) {
     listener: (context, state) {},
     builder: (context, state) {
       var get = HomeCubit.get(context);
+      var loading = false;
       return Drawer(
         width: width! * 0.7,
         backgroundColor: Colors.teal,
@@ -172,10 +165,7 @@ Widget drawer(context, {double? width, double? height}) {
             ),
             AutoSizeText(
               S.of(context).name_company,
-              style: Theme.of(context)
-                  .textTheme
-                  .headline3!
-                  .copyWith(color: Colors.white),
+              style: Theme.of(context).textTheme.headline3!.copyWith(color: Colors.white),
               textScaleFactor: 1,
               minFontSize: 27,
               maxFontSize: 30,
@@ -203,8 +193,10 @@ Widget drawer(context, {double? width, double? height}) {
                     ),
                     AutoSizeText(
                       S.of(context).home,
-                      style: Theme.of(context).textTheme.headline3!.copyWith(
-                          color: Colors.white),
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline3!
+                          .copyWith(color: Colors.white),
                       textScaleFactor: 1,
                       minFontSize: 23,
                       maxFontSize: 25,
@@ -238,8 +230,10 @@ Widget drawer(context, {double? width, double? height}) {
                     ),
                     AutoSizeText(
                       S.of(context).all_courses,
-                      style: Theme.of(context).textTheme.headline3!.copyWith(
-                          color: Colors.white),
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline3!
+                          .copyWith(color: Colors.white),
                       textScaleFactor: 1,
                       minFontSize: 23,
                       maxFontSize: 25,
@@ -304,8 +298,10 @@ Widget drawer(context, {double? width, double? height}) {
                     ),
                     AutoSizeText(
                       S.of(context).child_courses,
-                      style: Theme.of(context).textTheme.headline3!.copyWith(
-                          color: Colors.white),
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline3!
+                          .copyWith(color: Colors.white),
                       textScaleFactor: 1,
                       minFontSize: 23,
                       maxFontSize: 25,
@@ -319,22 +315,28 @@ Widget drawer(context, {double? width, double? height}) {
                 onPressed: () {
                   get.getMyChildren();
                   Navigator.pop(context);
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => MyChildrenScreen(),));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MyChildrenScreen(),
+                      ));
                 },
                 child: Row(
                   children: [
                     SizedBox(
                       width: width * 0.03,
                     ),
-                    
-                    Image.asset('image/icon/student.png',color: Colors.white,width: width * 0.08,height: height * 0.05),
+                    Image.asset('image/icon/student.png',
+                        color: Colors.white, width: width * 0.08, height: height * 0.05),
                     SizedBox(
                       width: width * 0.1,
                     ),
                     AutoSizeText(
                       S.of(context).my_children,
-                      style: Theme.of(context).textTheme.headline3!.copyWith(
-                          color: Colors.white),
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline3!
+                          .copyWith(color: Colors.white),
                       textScaleFactor: 1,
                       minFontSize: 23,
                       maxFontSize: 25,
@@ -356,7 +358,6 @@ Widget drawer(context, {double? width, double? height}) {
                     SizedBox(
                       width: width * 0.03,
                     ),
-
                     Icon(
                       Icons.payment_outlined,
                       color: Colors.white,
@@ -367,8 +368,10 @@ Widget drawer(context, {double? width, double? height}) {
                     ),
                     AutoSizeText(
                       S.of(context).payment_history,
-                      style: Theme.of(context).textTheme.headline3!.copyWith(
-                          color: Colors.white),
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline3!
+                          .copyWith(color: Colors.white),
                       textScaleFactor: 1,
                       minFontSize: 23,
                       maxFontSize: 25,
@@ -402,8 +405,10 @@ Widget drawer(context, {double? width, double? height}) {
                     ),
                     AutoSizeText(
                       S.of(context).info,
-                      style: Theme.of(context).textTheme.headline3!.copyWith(
-                          color: Colors.white),
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline3!
+                          .copyWith(color: Colors.white),
                       textScaleFactor: 1,
                       minFontSize: 23,
                       maxFontSize: 25,
@@ -442,8 +447,10 @@ Widget drawer(context, {double? width, double? height}) {
                     ),
                     AutoSizeText(
                       S.of(context).log_out,
-                      style: Theme.of(context).textTheme.headline3!.copyWith(
-                          color: Colors.white),
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline3!
+                          .copyWith(color: Colors.white),
                       textScaleFactor: 1,
                       minFontSize: 23,
                       maxFontSize: 25,
@@ -486,8 +493,8 @@ Widget drawer(context, {double? width, double? height}) {
                       .headline3!
                       .copyWith(color: Colors.white),
                   textScaleFactor: 1,
-                minFontSize: 23,
-                maxFontSize: 25,
+                  minFontSize: 23,
+                  maxFontSize: 25,
                 ),
               ],
             ),
@@ -495,19 +502,57 @@ Widget drawer(context, {double? width, double? height}) {
               height: height * 0.03,
             ),
             TextButton(
-              child: AutoSizeText(
-              'Made By CHI-Co Team',
-              style: Theme.of(context)
-                  .textTheme
-                  .headline3!
-                  .copyWith(color: Colors.white),
-                textScaleFactor: 1,
-                minFontSize: 20,
-                maxFontSize: 22,
-              ),onPressed: ()async{
-              var url = 'https://chi-team.com';
-              if (await launchUrl(Uri.parse(url),
-                  mode: LaunchMode.inAppWebView)) {}
+                child: AutoSizeText(
+                  'Made By CHI-Co Team',
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline3!
+                      .copyWith(color: Colors.white),
+                  textScaleFactor: 1,
+                  minFontSize: 20,
+                  maxFontSize: 22,
+                ),
+                onPressed: () async {
+                  var url = 'https://chi-team.com';
+                  if (await launchUrl(Uri.parse(url), mode: LaunchMode.inAppWebView)) {}
+                }),
+            StatefulBuilder(builder: (context, mState) {
+              if (loading) return CircularProgressIndicator.adaptive();
+              return TextButton(
+                child: AutoSizeText(
+                  'Delete Account',
+                  style:
+                      Theme.of(context).textTheme.headline3!.copyWith(color: Colors.grey),
+                  textScaleFactor: 1,
+                  minFontSize: 20,
+                  maxFontSize: 22,
+                ),
+                onPressed: () async {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return DeleteAccountDialog();
+                    },
+                  ).then((confirmed) {
+                    if (!confirmed) return;
+
+                    mState(() => loading = true);
+                    DioHelper.deleteData(
+                            url: 'guardian/delete',
+                            data: {},
+                            token: CacheHelper.getData(key: 'token_student'))
+                        .then((value) {
+                      mState(() => loading = false);
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LoginScreen(),
+                          ),
+                          (route) => false);
+                    });
+                  });
+                },
+              );
             }),
             SizedBox(
               height: height * 0.01,
@@ -517,4 +562,30 @@ Widget drawer(context, {double? width, double? height}) {
       );
     },
   );
+}
+
+class DeleteAccountDialog extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text('Delete Account'),
+      content: Text(
+          'Are you sure you want to delete your account? This action cannot be undone.'),
+      actions: <Widget>[
+        ElevatedButton(
+          child: Text('Cancel'),
+          onPressed: () {
+            Navigator.of(context)
+                .pop(false); // Return false when cancel button is pressed
+          },
+        ),
+        ElevatedButton(
+          child: Text('Delete'),
+          onPressed: () {
+            Navigator.of(context).pop(true); // Return true when delete button is pressed
+          },
+        ),
+      ],
+    );
+  }
 }

@@ -20,8 +20,14 @@ class _HomeWorkScreenState extends State<HomeWorkScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery
+        .of(context)
+        .size
+        .height;
+    var width = MediaQuery
+        .of(context)
+        .size
+        .width;
 
     return BlocConsumer<ChildCubit, ChildState>(
       listener: (context, state) {},
@@ -40,8 +46,13 @@ class _HomeWorkScreenState extends State<HomeWorkScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      S.of(context).pleaseSelectCourse,
-                      style: Theme.of(context).textTheme.bodyText2,
+                      S
+                          .of(context)
+                          .pleaseSelectCourse,
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .bodyText2,
                       textScaleFactor: 1,
                     ),
                     SizedBox(
@@ -53,10 +64,15 @@ class _HomeWorkScreenState extends State<HomeWorkScreen> {
                         items: get.model!.date.map((e) {
                           return DropdownMenuItem(
                             child: Text(
-                              HomeCubit.get(context).lang == "ar"
+                              HomeCubit
+                                  .get(context)
+                                  .lang == "ar"
                                   ? e.ar_name!
                                   : e.en_name!,
-                              style: Theme.of(context).textTheme.bodyText1,
+                              style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .bodyText1,
                               textScaleFactor: 1,
                             ),
                             value: e.id,
@@ -68,9 +84,9 @@ class _HomeWorkScreenState extends State<HomeWorkScreen> {
                         onChanged: (dynamic value) {},
                         decoration: InputDecoration(
                           focusedBorder:
-                              OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                          OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
                           enabledBorder:
-                              OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                          OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
                         ),
                       ),
                     ),
@@ -119,8 +135,8 @@ class _HomeWorkScreenState extends State<HomeWorkScreen> {
                           ),
                         )
                       : Center(
-                          child: AdabtiveIndecator(os: getOS()),
-                        ),
+                    child: AdabtiveIndecator(os: getOS()),
+                  ),
                 ],
               ),
               SizedBox(
@@ -128,27 +144,36 @@ class _HomeWorkScreenState extends State<HomeWorkScreen> {
               ),
               state is! GetSessionsLoadingState
                   ? get.sessionModel != null
-                      ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              S.of(context).selectHomeworkToDownloadOrOpen,
-                              style: Theme.of(context).textTheme.bodyText2,
-                              textScaleFactor: 1,
-                            ),
-                            TextButton(
-                                onPressed: () {
-                                  get.checkFile(get.sessionModel!.homeWork!.url!);
-                                },
-                                child: Text(
-                                  get.sessionModel!.homeWork!.name!,
-                                  style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                                        color: Colors.blue,
-                                      ),
-                                ))
-                          ],
-                        )
-                      : SizedBox()
+                  ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    S
+                        .of(context)
+                        .selectHomeworkToDownloadOrOpen,
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .bodyText2,
+                    textScaleFactor: 1,
+                  ),
+                  TextButton(
+                      onPressed: () {
+                        get.checkFile(get.sessionModel!.homeWork!.url!);
+                      },
+                      child: Text(
+                        get.sessionModel!.homeWork!.name!,
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .bodyText2!
+                            .copyWith(
+                          color: Colors.blue,
+                        ),
+                      ))
+                ],
+              )
+                  : SizedBox()
                   : Center(child: AdabtiveIndecator(os: getOS())),
             ],
           ),
