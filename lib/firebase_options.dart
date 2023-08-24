@@ -59,12 +59,12 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBeK_RtISAV1WTV_HQq_z9Mpm5kIfd-9Dg',
-    appId: '1:747835007262:ios:ab5ded48e112c78566e90f',
+    appId: '1:747835007262:ios:c59f43f25168632f66e90f',
     messagingSenderId: '747835007262',
     projectId: 'afaq-academy',
     storageBucket: 'afaq-academy.appspot.com',
     androidClientId: '747835007262-4ql3n6534cfdfu2uok85eolq5l581pqu.apps.googleusercontent.com',
-    iosClientId: '747835007262-7vof38n7u0ld7dev0nd0624he3sggohp.apps.googleusercontent.com',
-    iosBundleId: 'com.afaq.afaqAlnourAcademy',
+    iosClientId: '747835007262-kpjus8vt3cj52fc7848kv63p82546j47.apps.googleusercontent.com',
+    iosBundleId: 'com.chi.afaqAlnourAcademy',
   );
 }

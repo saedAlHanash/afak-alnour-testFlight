@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "747835007262-ad5pn72d0t39p5qs2tof7itl97gh3p4l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.afaq.afaq_alnour_academy",
+            "certificate_hash": "e37ad461ba2172464e66075d8d8d6b2e9cb17daa"
+          }
+        },
+        {
           "client_id": "747835007262-6j9ems31tbelrsgh3fhrkn7h25jr4oms.apps.googleusercontent.com",
           "client_type": 3
         }

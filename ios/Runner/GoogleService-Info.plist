@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.afaq.afaqAlnourAcademy</string>
+	<string>com.chi.afaqAlnourAcademy</string>
 	<key>PROJECT_ID</key>
 	<string>afaq-academy</string>
 	<key>STORAGE_BUCKET</key>
